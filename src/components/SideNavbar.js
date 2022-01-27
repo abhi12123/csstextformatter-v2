@@ -1,0 +1,38 @@
+import { faUndo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { styleDetailsArray } from "../data/styleDetailsArray";
+import StyleEntry from "./StyleEntry";
+
+export default function SideNavbar({ expandNavBar }) {
+  return (
+    <div
+      className={`sidebar bg-blue-800 text-blue-100 w-3/4 md:w-1/3 lg:w-1/3  py-7 px-2 absolute inset-y-0 left-0 transform ${
+        !expandNavBar && "-translate-x-full"
+      } md:relative md:translate-x-0 transition duration-200 ease-in-out `}
+    >
+      <div className="text-white flex items-center justify-center space-x-2 p-4">
+        <img
+          width="40"
+          alt="CSS3 logo and wordmark"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/256px-CSS3_logo_and_wordmark.svg.png"
+        />
+        <span className="text-2xl font-extrabold">Css Text Formatter</span>
+      </div>
+
+      <nav>
+        <button class="px-4 py-1 items-center bg-white text-blue-700  flex justify-center max-w-fit m-auto rounded">
+          <p className="px-2">Reset All</p>
+            <FontAwesomeIcon icon={faUndo} />
+        </button>
+        {styleDetailsArray.map((styleDetails) => {
+          return (
+            <StyleEntry
+              styleDetails={styleDetails}
+            />
+          );
+        })}
+      </nav>
+    </div>
+  );
+}
