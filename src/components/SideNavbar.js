@@ -4,7 +4,45 @@ import React from "react";
 import { styleDetailsArray } from "../data/styleDetailsArray";
 import StyleEntry from "./StyleEntry";
 
-export default function SideNavbar({ expandNavBar }) {
+export default function SideNavbar({
+  expandNavBar,
+  setPreviewStyle,
+  previewStyle,
+}) {
+  const updatedStyle = (style) => {
+    const { property, value } = style;
+    const index = property.indexOf("-");
+    let convertedPropertyName = property;
+    if (index > -1) {
+      let propertyValue = property[index + 1].toUpperCase();
+      convertedPropertyName =
+        property.slice(0, index) + propertyValue + property.slice(index + 2);
+    }
+    let convertedValue = value;
+    if (typeof value == "object") {
+      convertedValue = `rgb(${value.r},${value.g},${value.b},${value.a})`;
+    }
+    setPreviewStyle({
+      ...previewStyle,
+      [convertedPropertyName]: convertedValue,
+    });
+  };
+
+  const removeStyle = (property) => {
+    const index = property.indexOf("-");
+    let convertedPropertyName = property;
+    if (index > -1) {
+      let propertyValue = property[index + 1].toUpperCase();
+      convertedPropertyName =
+        property.slice(0, index) + propertyValue + property.slice(index + 2);
+    }
+    if (previewStyle[convertedPropertyName]) {
+      let pwStyle = { ...previewStyle };
+      console.log(convertedPropertyName, pwStyle[convertedPropertyName]);
+      delete pwStyle[convertedPropertyName];
+      setPreviewStyle(pwStyle);
+    }
+  };
   return (
     <div
       className={`sidebar bg-blue-800 text-blue-100 w-3/4 md:w-1/3 lg:w-1/3  py-7 px-2 absolute inset-y-0 left-0 transform ${
@@ -23,12 +61,14 @@ export default function SideNavbar({ expandNavBar }) {
       <nav>
         <button class="px-4 py-1 items-center bg-white text-blue-700  flex justify-center max-w-fit m-auto rounded">
           <p className="px-2">Reset All</p>
-            <FontAwesomeIcon icon={faUndo} />
+          <FontAwesomeIcon icon={faUndo} />
         </button>
-        {styleDetailsArray.map((styleDetails) => {
+        {styleDetailsArray.map((styleDetails, i) => {
           return (
             <StyleEntry
               styleDetails={styleDetails}
+              updatedStyle={updatedStyle}
+              removeStyle={removeStyle}
             />
           );
         })}

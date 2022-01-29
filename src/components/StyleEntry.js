@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SketchPicker } from "react-color";
 
-export default function StyleEntry({ styleDetails }) {
+export default function StyleEntry({
+  styleDetails,
+  updatedStyle,
+  removeStyle,
+}) {
   const { name, inputType, units, defaultValue } = styleDetails;
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -12,10 +16,66 @@ export default function StyleEntry({ styleDetails }) {
     color:
       defaultValue && typeof defaultValue == "object"
         ? defaultValue
-        : { r: 255, g: 255, b: 255, a: 255 },
+        : { r: 0, g: 0, b: 0, a: 255 },
     number: defaultValue && typeof defaultValue == "number" ? defaultValue : 0,
     unit: "px",
+    active: false,
   });
+
+  const handleCheck = (e) => {
+    setChecked(!checked);
+    setForm({ ...form, active: e.target.checked });
+  };
+
+  const handleReset = () => {
+    const getValue = () => {
+      if (units) {
+        return defaultValue + "px";
+      }
+      return defaultValue;
+    };
+
+    const style = {
+      property: name,
+      value: getValue(),
+    };
+
+    updatedStyle(style);
+    setForm({
+      ...form,
+      color:
+        defaultValue && typeof defaultValue == "object"
+          ? defaultValue
+          : { r: 0, g: 0, b: 0, a: 255 },
+      number:
+        defaultValue && typeof defaultValue == "number" ? defaultValue : 0,
+      unit: "px",
+    });
+  };
+
+  useEffect(() => {
+    console.log(form);
+    const { name, color, number, unit, active } = form;
+    if (active) {
+      const getValue = () => {
+        if (inputType == "number") {
+          if (units) {
+            return number + unit;
+          }
+          return number;
+        }
+        return color;
+      };
+
+      const style = {
+        property: name,
+        value: getValue(),
+      };
+      updatedStyle(style);
+    } else {
+      removeStyle(name);
+    }
+  }, [form]);
 
   const getInput = () => {
     return (
@@ -24,24 +84,22 @@ export default function StyleEntry({ styleDetails }) {
           {inputType == "number" && (
             <input
               type="number"
-              defaultValue={form.number}
+              value={form.number}
               onChange={(e) => setForm({ ...form, number: e.target.value })}
-              className="m-1 p-1 w-16"
+              className="m-1 p-1 w-16 rounded"
             />
           )}
 
           {inputType == "color" && (
             <div>
-              <button
-                onClick={() => setDisplayColorPicker(!displayColorPicker)}
-              >
+              <div onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                 <div
-                  className={`m-1 p-2 w-16 h-7 border-2 border-white`}
+                  className={`m-1 p-2 w-16 h-7 border-2 border-white rounded`}
                   style={{
                     backgroundColor: `rgba(${form.color.r},${form.color.g},${form.color.b},${form.color.a})`,
                   }}
                 ></div>
-              </button>
+              </div>
               {displayColorPicker ? (
                 <div className="absolute">
                   <div onClick={() => setDisplayColorPicker(false)} />
@@ -57,9 +115,9 @@ export default function StyleEntry({ styleDetails }) {
 
           {units && (
             <select
-              className="m-1 p-1 w-16"
+              className="m-1 p-1 w-16 rounded"
               name="unit"
-              defaultValue={form.unit}
+              value={form.unit}
               onChange={(e) => setForm({ ...form, unit: e.target.value })}
             >
               {units.map((unit) => {
@@ -71,7 +129,7 @@ export default function StyleEntry({ styleDetails }) {
       </div>
     );
   };
-  
+
   return (
     <div class="py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm">
       <div class="flex items-center">
@@ -82,7 +140,7 @@ export default function StyleEntry({ styleDetails }) {
             type="checkbox"
             class="sr-only"
             id={`checked-${name}`}
-            onChange={() => setChecked(!checked)}
+            onChange={(e) => handleCheck(e)}
           />
           <div
             class={`w-10 h-4 bg-gray-400 rounded-full shadow-inner  ${
@@ -97,7 +155,11 @@ export default function StyleEntry({ styleDetails }) {
         </label>
         <div class="ml-3 text-gray-700 font-medium"></div>
       </div>
-      <FontAwesomeIcon className="mx-5 cursor-pointer" icon={faUndo} />
+      <FontAwesomeIcon
+        className="mx-5 cursor-pointer"
+        icon={faUndo}
+        onClick={handleReset}
+      />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faCode } from "@fortawesome/free-solid-svg-icons";
 
-export default function CodeAndPreview() {
+export default function CodeAndPreview({ previewStyle }) {
   const [viewType, setViewType] = useState("code");
   return (
     <div>
@@ -31,11 +31,24 @@ export default function CodeAndPreview() {
           <FontAwesomeIcon icon={faCode} className="mx-1" />
         </button>
       </div>
-      <div className="bg-blue-100 m-3 rounded p-4">
+      <div className="m-3  p-4">
         {viewType == "code" ? (
-          <div className="font-mono">code</div>
+          <div className="font-mono bg-blue-100 rounded p-4">code</div>
         ) : (
-          <div>preview</div>
+          <div
+            style={previewStyle}
+            className="border-2 rounded border-blue-100  p-4"
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+          </div>
         )}
       </div>
     </div>

@@ -1,16 +1,13 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { useState } from "react";
 import SideNavbar from "./components/SideNavbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import CodeAndPreview from "./components/CodeAndPreview";
 
 function App() {
   const [expandNavBar, setExpandNavBar] = useState(false);
+  const [previewStyle, setPreviewStyle] = useState({});
   return (
     <div className="relative min-h-screen md:flex">
       <div className="bg-gray-800 text-gray-100 flex justify-between items-center md:hidden">
@@ -25,9 +22,11 @@ function App() {
       </div>
       <SideNavbar
         expandNavBar={expandNavBar}
+        setPreviewStyle={setPreviewStyle}
+        previewStyle={previewStyle}
       />
-      <div className="flex-1 p-10 font-bold">
-        <CodeAndPreview/>
+      <div className="flex-1 p-10">
+        <CodeAndPreview previewStyle={previewStyle} />
       </div>
     </div>
   );
