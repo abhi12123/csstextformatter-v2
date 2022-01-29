@@ -7,6 +7,7 @@ export default function StyleEntry({
   styleDetails,
   updatedStyle,
   removeStyle,
+  reset,
 }) {
   const { name, inputType, units, defaultValue } = styleDetails;
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
@@ -29,10 +30,13 @@ export default function StyleEntry({
 
   const handleReset = () => {
     const getValue = () => {
-      if (units) {
-        return defaultValue + "px";
+      if (inputType == "number") {
+        if (units) {
+          return defaultValue + "px";
+        }
+        return defaultValue;
       }
-      return defaultValue;
+      return `rgb(255,255,255,1)`
     };
 
     const style = {
@@ -54,7 +58,6 @@ export default function StyleEntry({
   };
 
   useEffect(() => {
-    console.log(form);
     const { name, color, number, unit, active } = form;
     if (active) {
       const getValue = () => {
@@ -77,16 +80,20 @@ export default function StyleEntry({
     }
   }, [form]);
 
+  useEffect(() => {
+    handleReset();
+  }, [reset]);
+
   const getInput = () => {
     return (
-      <div className="text-black">
-        <form>
+      <div className="text-black w-1/3">
+        <form className="text-center">
           {inputType == "number" && (
             <input
               type="number"
               value={form.number}
               onChange={(e) => setForm({ ...form, number: e.target.value })}
-              className="m-1 p-1 w-16 rounded"
+              className="m-1 p-1 w-12 rounded"
             />
           )}
 
@@ -94,7 +101,7 @@ export default function StyleEntry({
             <div>
               <div onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                 <div
-                  className={`m-1 p-2 w-16 h-7 border-2 border-white rounded`}
+                  className={`m-1 p-2 w-12 h-7 border-2 border-white rounded mx-auto `}
                   style={{
                     backgroundColor: `rgba(${form.color.r},${form.color.g},${form.color.b},${form.color.a})`,
                   }}
@@ -115,7 +122,7 @@ export default function StyleEntry({
 
           {units && (
             <select
-              className="m-1 p-1 w-16 rounded"
+              className="m-1 p-1 w-12 rounded"
               name="unit"
               value={form.unit}
               onChange={(e) => setForm({ ...form, unit: e.target.value })}
@@ -132,8 +139,8 @@ export default function StyleEntry({
 
   return (
     <div class="py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm">
-      <div class="flex items-center">
-        <p className="mx-4">{name}</p>
+      <div class="flex items-center justify-center w-4/5">
+        <p className="mx-4 w-1/3">{name}</p>
         {getInput()}
         <label htmlFor={`checked-${name}`} class="relative cursor-pointer m-2">
           <input
@@ -153,10 +160,10 @@ export default function StyleEntry({
             }`}
           ></div>
         </label>
-        <div class="ml-3 text-gray-700 font-medium"></div>
       </div>
+
       <FontAwesomeIcon
-        className="mx-5 cursor-pointer"
+        className="mx-1 cursor-pointer"
         icon={faUndo}
         onClick={handleReset}
       />

@@ -8,6 +8,7 @@ import CodeAndPreview from "./components/CodeAndPreview";
 function App() {
   const [expandNavBar, setExpandNavBar] = useState(false);
   const [previewStyle, setPreviewStyle] = useState({});
+  const [previewCode, setPreviewCode] = useState({});
   return (
     <div className="relative min-h-screen md:flex">
       <div className="bg-gray-800 text-gray-100 flex justify-between items-center md:hidden">
@@ -24,9 +25,11 @@ function App() {
         expandNavBar={expandNavBar}
         setPreviewStyle={setPreviewStyle}
         previewStyle={previewStyle}
+        setPreviewCode={setPreviewCode}
+        previewCode={previewCode}
       />
       <div className="flex-1 p-10">
-        <CodeAndPreview previewStyle={previewStyle} />
+        <CodeAndPreview previewStyle={previewStyle} previewCode={previewCode}/>
       </div>
     </div>
   );
