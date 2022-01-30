@@ -17,8 +17,6 @@ export default function StyleEntry({ styleDetails, reset }) {
   const styles = useSelector((state) => state.styleReducer.value);
   
   const handleChangeValue = (value) => {
-    console.log(value);
-
     if(Object.keys(styles).length === 0){
       handleReset();
     }
@@ -33,7 +31,6 @@ export default function StyleEntry({ styleDetails, reset }) {
   };
 
   const handleReset = () => {
-    console.log('triger');
     setInputValues({
       value: defaultValue,
       unit: "px",
@@ -45,7 +42,6 @@ export default function StyleEntry({ styleDetails, reset }) {
       dispatch(removeStyle({ property: name }));
       return;
     }
-    console.log(inputValues);
     let dispatchPayLoad = {
       property: name,
       value: inputValues.value,
@@ -56,7 +52,6 @@ export default function StyleEntry({ styleDetails, reset }) {
         value: inputValues.value + inputValues.unit,
       };
     }
-    console.log(dispatchPayLoad);
     dispatch(addStyle(dispatchPayLoad));
   }, [inputValues, checked]);
 
@@ -64,7 +59,7 @@ export default function StyleEntry({ styleDetails, reset }) {
     handleReset();
   },[reset])
 
-  const Input = () => {
+  const getInput = () => {
     return (
       <div className="text-black w-1/3">
         <form className="text-center">
@@ -146,7 +141,7 @@ export default function StyleEntry({ styleDetails, reset }) {
     <div className="py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm">
       <div className="flex items-center justify-center w-4/5">
         <p className="mx-4 w-1/3">{name}</p>
-        <Input />
+        {getInput()}
         <CheckBox />
       </div>
       <FontAwesomeIcon
