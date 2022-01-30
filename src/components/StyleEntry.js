@@ -2,108 +2,101 @@ import React, { useEffect, useState } from "react";
 import { faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SketchPicker } from "react-color";
+import { useDispatch, useSelector } from "react-redux";
+import { addStyle, removeStyle } from "../redux/reducer";
 
-export default function StyleEntry({
-  styleDetails,
-  updatedStyle,
-  removeStyle,
-  reset,
-}) {
-  const { name, inputType, units, defaultValue } = styleDetails;
+export default function StyleEntry({ styleDetails, reset }) {
+  const { name, type, units, defaultValue } = styleDetails;
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [form, setForm] = useState({
-    name,
-    color:
-      defaultValue && typeof defaultValue == "object"
-        ? defaultValue
-        : { r: 0, g: 0, b: 0, a: 255 },
-    number: defaultValue && typeof defaultValue == "number" ? defaultValue : 0,
+  const dispatch = useDispatch();
+  const [inputValues, setInputValues] = useState({
+    value: defaultValue,
     unit: "px",
-    active: false,
   });
+  const styles = useSelector((state) => state.styleReducer.value);
+  
+  const handleChangeValue = (value) => {
+    console.log(value);
 
-  const handleCheck = (e) => {
-    setChecked(!checked);
-    setForm({ ...form, active: e.target.checked });
+    if(Object.keys(styles).length === 0){
+      handleReset();
+    }
+    if (type == "color") {
+      setInputValues({
+        ...inputValues,
+        value: `rgb(${value.rgb.r},${value.rgb.g},${value.rgb.b},${value.rgb.a})`,
+      });
+    } else {
+      setInputValues({ ...inputValues, value: value });
+    }
   };
 
   const handleReset = () => {
-    const getValue = () => {
-      if (inputType == "number") {
-        if (units) {
-          return defaultValue + "px";
-        }
-        return defaultValue;
-      }
-      return `rgb(255,255,255,1)`
-    };
-
-    const style = {
-      property: name,
-      value: getValue(),
-    };
-
-    updatedStyle(style);
-    setForm({
-      ...form,
-      color:
-        defaultValue && typeof defaultValue == "object"
-          ? defaultValue
-          : { r: 0, g: 0, b: 0, a: 255 },
-      number:
-        defaultValue && typeof defaultValue == "number" ? defaultValue : 0,
+    console.log('triger');
+    setInputValues({
+      value: defaultValue,
       unit: "px",
     });
   };
 
   useEffect(() => {
-    const { name, color, number, unit, active } = form;
-    if (active) {
-      const getValue = () => {
-        if (inputType == "number") {
-          if (units) {
-            return number + unit;
-          }
-          return number;
-        }
-        return color;
-      };
-
-      const style = {
-        property: name,
-        value: getValue(),
-      };
-      updatedStyle(style);
-    } else {
-      removeStyle(name);
+    if (!checked) {
+      dispatch(removeStyle({ property: name }));
+      return;
     }
-  }, [form]);
+    console.log(inputValues);
+    let dispatchPayLoad = {
+      property: name,
+      value: inputValues.value,
+    };
+    if (units) {
+      dispatchPayLoad = {
+        ...dispatchPayLoad,
+        value: inputValues.value + inputValues.unit,
+      };
+    }
+    console.log(dispatchPayLoad);
+    dispatch(addStyle(dispatchPayLoad));
+  }, [inputValues, checked]);
 
-  useEffect(() => {
+  useEffect(()=>{
     handleReset();
-  }, [reset]);
+  },[reset])
 
-  const getInput = () => {
+  const Input = () => {
     return (
       <div className="text-black w-1/3">
         <form className="text-center">
-          {inputType == "number" && (
+          {type == "number" && (
             <input
               type="number"
-              value={form.number}
-              onChange={(e) => setForm({ ...form, number: e.target.value })}
+              value={inputValues.value}
+              onChange={(e) => handleChangeValue(e.target.value)}
               className="m-1 p-1 w-12 rounded"
             />
           )}
 
-          {inputType == "color" && (
+          {units && (
+            <select
+              className="m-1 p-1 w-12 rounded"
+              name="unit"
+              value={inputValues.value}
+              onChange={(e) => handleChangeValue(e.target.value)}
+            >
+              {units.map((unit, i) => {
+                return <option key={i}>{unit}</option>;
+              })}
+            </select>
+          )}
+
+          {type == "color" && (
             <div>
               <div onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                 <div
                   className={`m-1 p-2 w-12 h-7 border-2 border-white rounded mx-auto `}
                   style={{
-                    backgroundColor: `rgba(${form.color.r},${form.color.g},${form.color.b},${form.color.a})`,
+                    backgroundColor: inputValues.value,
                   }}
                 ></div>
               </div>
@@ -111,57 +104,51 @@ export default function StyleEntry({
                 <div className="absolute">
                   <div onClick={() => setDisplayColorPicker(false)} />
                   <SketchPicker
-                    color={form.color}
-                    name={name}
-                    onChange={(color) => setForm({ ...form, color: color.rgb })}
+                    color={inputValues.value}
+                    onChange={(value) => handleChangeValue(value)}
                   />
                 </div>
               ) : null}
             </div>
-          )}
-
-          {units && (
-            <select
-              className="m-1 p-1 w-12 rounded"
-              name="unit"
-              value={form.unit}
-              onChange={(e) => setForm({ ...form, unit: e.target.value })}
-            >
-              {units.map((unit) => {
-                return <option>{unit}</option>;
-              })}
-            </select>
           )}
         </form>
       </div>
     );
   };
 
-  return (
-    <div class="py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm">
-      <div class="flex items-center justify-center w-4/5">
-        <p className="mx-4 w-1/3">{name}</p>
-        {getInput()}
-        <label htmlFor={`checked-${name}`} class="relative cursor-pointer m-2">
-          <input
-            type="checkbox"
-            class="sr-only"
-            id={`checked-${name}`}
-            onChange={(e) => handleCheck(e)}
-          />
-          <div
-            class={`w-10 h-4 bg-gray-400 rounded-full shadow-inner  ${
-              checked && "bg-green-600"
-            }`}
-          ></div>
-          <div
-            class={`dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition ${
-              checked && "translate-x-full"
-            }`}
-          ></div>
-        </label>
-      </div>
+  const CheckBox = () => {
+    return (
+      <label
+        htmlFor={`checked-${name}`}
+        className="relative cursor-pointer m-2"
+      >
+        <input
+          type="checkbox"
+          className="sr-only"
+          id={`checked-${name}`}
+          onChange={(e) => setChecked(!checked)}
+        />
+        <div
+          className={`w-10 h-4 bg-gray-400 rounded-full shadow-inner  ${
+            checked && "bg-green-600"
+          }`}
+        ></div>
+        <div
+          className={`dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition ${
+            checked && "translate-x-full"
+          }`}
+        ></div>
+      </label>
+    );
+  };
 
+  return (
+    <div className="py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm">
+      <div className="flex items-center justify-center w-4/5">
+        <p className="mx-4 w-1/3">{name}</p>
+        <Input />
+        <CheckBox />
+      </div>
       <FontAwesomeIcon
         className="mx-1 cursor-pointer"
         icon={faUndo}

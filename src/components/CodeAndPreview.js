@@ -2,16 +2,27 @@ import React from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faCode, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { cssToInline } from "../helpers/helper";
+import { useEffect } from "react/cjs/react.development";
 
-export default function CodeAndPreview({ previewStyle, previewCode }) {
+export default function CodeAndPreview() {
   const [viewType, setViewType] = useState("preview");
   const [notificationOpacity, setNotificationOpacity] = useState(0);
+  const styles = useSelector((state) => state.styleReducer.value);
+  const [cssStyle, setCssStyle] = useState({});
+  const genCssCode = () => {
+    let dpCssStyle = {}
+    Object.keys(styles).map(function (key, index) {
+      dpCssStyle[cssToInline(key)] = styles[key];
+    });
+    setCssStyle(dpCssStyle)
+  }
 
   const genPreviewCode = () => {
     let str = "";
-    Object.keys(previewCode).map(function (key, index) {
-      console.log(key, previewCode[key]);
-      str += `${key}:${previewCode[key]};\n`;
+    Object.keys(styles).map(function (key, index) {
+      str += `${key}:${styles[key]};\n`;
     });
     return str;
   };
@@ -30,6 +41,11 @@ export default function CodeAndPreview({ previewStyle, previewCode }) {
       setNotificationOpacity(0);
     }, 1000);
   };
+
+  useEffect(()=>{
+    genCssCode();
+  },[styles])
+  
   return (
     <div>
       <div className="flex justify-end">
@@ -60,7 +76,7 @@ export default function CodeAndPreview({ previewStyle, previewCode }) {
         <div id="copy-code"></div>
         {viewType == "code" ? (
           <div className="bg-blue-100 rounded p-4 relative">
-            {Object.keys(previewCode).length !== 0 && (
+            {Object.keys(styles).length !== 0 && (
               <FontAwesomeIcon
                 icon={faCopy}
                 className="absolute right-5 text-xl text-blue-500 hover:text-blue-700 active:text-blue-900 cursor-pointer"
@@ -68,11 +84,11 @@ export default function CodeAndPreview({ previewStyle, previewCode }) {
               />
             )}
             <div
-              class={`absolute flex items-center bg-green-500 text-white text-sm font-bold px-2 py-1 rounded-md opacity-${notificationOpacity} transform transition-all duration-500 right-12`}
+              className={`absolute flex items-center bg-green-500 text-white text-sm font-bold px-2 py-1 rounded-md opacity-${notificationOpacity} transform transition-all duration-500 right-12`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 mr-2"
+                className="w-6 h-6 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -87,15 +103,15 @@ export default function CodeAndPreview({ previewStyle, previewCode }) {
               <p>Code copied</p>
             </div>
             {
-              Object.keys(previewCode).length === 0 ? <p className='text-center font-bold'>Enable a style to see it here</p>:
+              Object.keys(styles).length === 0 ? <p className='text-center font-bold'>Enable a style to see it here</p>:
               <pre>{genPreviewCode()}</pre>
             }
             
           </div>
         ) : (
           <div
-            style={previewStyle}
             className="border-2 rounded border-blue-100  p-4"
+            style={cssStyle}
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text

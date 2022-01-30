@@ -7,10 +7,8 @@ import CodeAndPreview from "./components/CodeAndPreview";
 
 function App() {
   const [expandNavBar, setExpandNavBar] = useState(false);
-  const [previewStyle, setPreviewStyle] = useState({});
-  const [previewCode, setPreviewCode] = useState({});
-  return (
-    <div className="relative min-h-screen md:flex">
+  const TopNavBar = () => {
+    return (
       <div className="bg-gray-800 text-gray-100 flex justify-between items-center md:hidden">
         <a href="#" className="block p-4 text-white font-bold">
           Css Text Formatter
@@ -21,15 +19,14 @@ function App() {
           onClick={() => setExpandNavBar(!expandNavBar)}
         />
       </div>
-      <SideNavbar
-        expandNavBar={expandNavBar}
-        setPreviewStyle={setPreviewStyle}
-        previewStyle={previewStyle}
-        setPreviewCode={setPreviewCode}
-        previewCode={previewCode}
-      />
+    );
+  };
+  return (
+    <div className="relative min-h-screen md:flex">
+      <TopNavBar />
+      <SideNavbar expandNavBar={expandNavBar} />
       <div className="flex-1 p-10">
-        <CodeAndPreview previewStyle={previewStyle} previewCode={previewCode}/>
+        <CodeAndPreview />
       </div>
     </div>
   );
