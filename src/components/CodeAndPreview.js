@@ -108,16 +108,16 @@ export default function CodeAndPreview() {
             className="border-2 rounded border-blue-100 p-4 overflow-hidden max-h-[70vh] my-4"
             style={cssStyle}
           >
-            Css Text Formatter is a webapp which can be used to format a text.
+            Css Text Formatter is a webapp which can be used to format a text sample.
             It displays the preview text and its CSS, which can copied with a
             click, ready to be used wherever you want.
             <br /> You can view the list of available styles in the sidebar,
-            with default values. You can change the values and check the
+            with its default values. You can change the values and check the
             preview. You can reset the values using the reset icon.
             <br />
-            To enable a styles click on the switch icon which is provided with
-            each style. Click on the Preiview and Code icons provided above to
-            view the preiview or code accordingly. Clicking on the copy icon
+            To enable a style click on the switch icon which is provided with
+            each style. Click on the Preview and Code icons provided above to
+            view the preview or code accordingly. Clicking on the copy icon
             will copy the CSS to your clipboard.
           </div>
         )}
