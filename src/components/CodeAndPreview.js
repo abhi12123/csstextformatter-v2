@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faCode, faCopy, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { cssToInline } from "../helpers/helper";
-import { useEffect } from "react/cjs/react.development";
 
 export default function CodeAndPreview() {
   const [viewType, setViewType] = useState("preview");
