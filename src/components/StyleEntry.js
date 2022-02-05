@@ -89,7 +89,7 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
             <div>
               <div onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                 <div
-                  className={`m-1 p-2 w-12 h-7 border-2 border-white rounded mx-auto `}
+                  className={`p-1 w-12 m-1 h-7 border-2 border-white rounded mx-auto `}
                   style={{
                     backgroundColor: inputValues.value,
                   }}
@@ -115,7 +115,7 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
     return (
       <label
         htmlFor={`checked-${name}`}
-        className="relative cursor-pointer m-2"
+        className="relative cursor-pointer m-2 "
       >
         <input
           type="checkbox"
@@ -145,7 +145,7 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
         <CheckBox />
       </div>
       <FontAwesomeIcon
-        className="mx-1 cursor-pointer"
+        className="mx-1 cursor-pointer active:text-blue-500"
         icon={faUndo}
         onClick={handleReset}
       />

@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCode, faCopy, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faCode,
+  faCopy,
+  faCheckCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { cssToInline } from "../helpers/helper";
 
@@ -11,12 +16,12 @@ export default function CodeAndPreview() {
   const styles = useSelector((state) => state.styleReducer.value);
   const [cssStyle, setCssStyle] = useState({});
   const genCssCode = () => {
-    let dpCssStyle = {}
+    let dpCssStyle = {};
     Object.keys(styles).map(function (key, index) {
       dpCssStyle[cssToInline(key)] = styles[key];
     });
-    setCssStyle(dpCssStyle)
-  }
+    setCssStyle(dpCssStyle);
+  };
 
   const genPreviewCode = () => {
     let str = "";
@@ -41,40 +46,40 @@ export default function CodeAndPreview() {
     }, 2000);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     genCssCode();
-  },[styles])
-  
+  }, [styles]);
+
   return (
     <div>
       <div className="flex justify-end">
         <button
           className={`${
             viewType == "code"
-              ? "bg-white hover:bg-blue-200 text-blue-500"
+              ? "bg-white hover:bg-blue-200 text-blue-500 active:bg-blue-900 active:text-blue-100"
               : "bg-blue-500 hover:bg-blue-700 text-white"
           } font-bold py-2 px-4 rounded mx-1`}
           onClick={() => setViewType("preview")}
         >
-          <p className="hidden md:inline">Preview</p>
+          Preview
           <FontAwesomeIcon icon={faEye} className="mx-1" />
         </button>
         <button
           className={`${
             viewType == "code"
               ? "bg-blue-500 hover:bg-blue-700 text-white"
-              : "bg-white hover:bg-blue-200 text-blue-500"
-          } font-bold py-2 px-4 rounded mx-1`}
+              : "bg-white hover:bg-blue-200 text-blue-500 active:bg-blue-900 active:text-blue-100"
+          } font-bold py-2 px-4 rounded ml-1`}
           onClick={() => setViewType("code")}
         >
-          <p className="hidden md:inline">Code</p>
+          Code
           <FontAwesomeIcon icon={faCode} className="mx-1" />
         </button>
       </div>
-      <div className="m-3  p-4">
+      <div>
         <div id="copy-code"></div>
         {viewType == "code" ? (
-          <div className="bg-blue-100 rounded p-4 relative">
+          <div className="bg-blue-100 rounded p-4 relative my-4 max-h-[80vh]">
             {Object.keys(styles).length !== 0 && (
               <FontAwesomeIcon
                 icon={faCopy}
@@ -83,31 +88,37 @@ export default function CodeAndPreview() {
               />
             )}
             <div
-              className={`absolute flex items-center bg-green-500 text-white text-sm font-bold px-2 py-1 rounded-md ${!displayNotification && 'hidden'} right-12`}
+              className={`absolute flex items-center bg-green-500 text-white text-sm font-bold px-2 py-1 rounded-md ${
+                !displayNotification && "hidden"
+              } right-12`}
             >
-              <FontAwesomeIcon icon={faCheckCircle} className='w-6 h-6 mr-2' />
+              <FontAwesomeIcon icon={faCheckCircle} className="w-6 h-6 mr-2" />
               <p>Code copied</p>
             </div>
-            {
-              Object.keys(styles).length === 0 ? <p className='text-center font-bold'>Enable a style to see it here</p>:
+            {Object.keys(styles).length === 0 ? (
+              <p className="text-center font-bold">
+                Enable a style to see it here
+              </p>
+            ) : (
               <pre>{genPreviewCode()}</pre>
-            }
-            
+            )}
           </div>
         ) : (
           <div
-            className="border-2 rounded border-blue-100 p-4 overflow-hidden max-h-[80vh]"
+            className="border-2 rounded border-blue-100 p-4 overflow-hidden max-h-[70vh] my-4"
             style={cssStyle}
           >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            Css Text Formatter is a webapp which can be used to format a text.
+            It displays the preview text and its CSS, which can copied with a
+            click, ready to be used wherever you want.
+            <br /> You can view the list of available styles in the sidebar,
+            with default values. You can change the values and check the
+            preview. You can reset the values using the reset icon.
+            <br />
+            To enable a styles click on the switch icon which is provided with
+            each style. Click on the Preiview and Code icons provided above to
+            view the preiview or code accordingly. Clicking on the copy icon
+            will copy the CSS to your clipboard.
           </div>
         )}
       </div>

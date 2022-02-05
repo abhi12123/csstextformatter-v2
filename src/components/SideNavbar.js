@@ -51,13 +51,7 @@ export default function SideNavbar({ expandNavBar }) {
       </div>
 
       <nav>
-        <button className="px-4 py-1 items-center bg-white text-blue-700 hover:bg-blue-200 active:bg-blue-500 active:text-white flex justify-center max-w-fit m-auto rounded">
-          <p className="px-2" onClick={handleResetAll}>
-            Reset All
-          </p>
-          <FontAwesomeIcon icon={faUndo} />
-        </button>
-        <div class="relative max-w-fit m-auto my-2 text-blue-700">
+        <div class="relative max-w-fit m-auto my-5 text-blue-700">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
             <FontAwesomeIcon icon={faSearch} />
           </span>
@@ -69,6 +63,12 @@ export default function SideNavbar({ expandNavBar }) {
             autocomplete="off"
           />
         </div>
+        <button className="px-4 py-1 my-3 items-center border text-white hover:bg-blue-700 active:bg-blue-900 active:border-blue-500 active:text-blue-500 flex justify-center max-w-fit m-auto rounded">
+          <p className="px-2" onClick={handleResetAll}>
+            Reset All
+          </p>
+          <FontAwesomeIcon icon={faUndo} className={``} />
+        </button>
         {styleDetailsArray.map((styleDetails, index) => {
           return (
             <StyleEntry
