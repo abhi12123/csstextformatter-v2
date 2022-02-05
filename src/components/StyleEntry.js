@@ -5,7 +5,7 @@ import { SketchPicker } from "react-color";
 import { useDispatch, useSelector } from "react-redux";
 import { addStyle, removeStyle } from "../redux/reducer";
 
-export default function StyleEntry({ styleDetails, reset }) {
+export default function StyleEntry({ styleDetails, reset, enableList,index }) {
   const { name, type, units, defaultValue } = styleDetails;
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -62,7 +62,7 @@ export default function StyleEntry({ styleDetails, reset }) {
   const getInput = () => {
     return (
       <div className="text-black w-1/3">
-        <form className="text-center">
+        <form className="text-center" onSubmit={(e)=>e.preventDefault()}>
           {type == "number" && (
             <input
               type="number"
@@ -76,8 +76,8 @@ export default function StyleEntry({ styleDetails, reset }) {
             <select
               className="m-1 p-1 w-12 rounded"
               name="unit"
-              value={inputValues.value}
-              onChange={(e) => handleChangeValue(e.target.value)}
+              value={inputValues.unit}
+              onChange={(e) => setInputValues({ ...inputValues, unit: e.target.value})}
             >
               {units.map((unit, i) => {
                 return <option key={i}>{unit}</option>;
@@ -96,7 +96,7 @@ export default function StyleEntry({ styleDetails, reset }) {
                 ></div>
               </div>
               {displayColorPicker ? (
-                <div className="absolute">
+                <div className="absolute z-10">
                   <div onClick={() => setDisplayColorPicker(false)} />
                   <SketchPicker
                     color={inputValues.value}
@@ -138,7 +138,7 @@ export default function StyleEntry({ styleDetails, reset }) {
   };
 
   return (
-    <div className="py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm">
+    <div className={`py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm ${!enableList[index] && 'hidden'} `}>
       <div className="flex items-center justify-center w-4/5">
         <p className="mx-4 w-1/3">{name}</p>
         {getInput()}

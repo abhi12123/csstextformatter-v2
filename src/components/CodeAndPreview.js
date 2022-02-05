@@ -1,14 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCode, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faCode, faCopy, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { cssToInline } from "../helpers/helper";
 import { useEffect } from "react/cjs/react.development";
 
 export default function CodeAndPreview() {
   const [viewType, setViewType] = useState("preview");
-  const [notificationOpacity, setNotificationOpacity] = useState(0);
+  const [displayNotification, setDisplayNotification] = useState(false);
   const styles = useSelector((state) => state.styleReducer.value);
   const [cssStyle, setCssStyle] = useState({});
   const genCssCode = () => {
@@ -36,10 +36,10 @@ export default function CodeAndPreview() {
     emptyArea.select();
     document.execCommand("copy");
     emptyArea.remove();
-    setNotificationOpacity(1);
+    setDisplayNotification(true);
     window.setTimeout(() => {
-      setNotificationOpacity(0);
-    }, 1000);
+      setDisplayNotification(false);
+    }, 2000);
   };
 
   useEffect(()=>{
@@ -84,22 +84,9 @@ export default function CodeAndPreview() {
               />
             )}
             <div
-              className={`absolute flex items-center bg-green-500 text-white text-sm font-bold px-2 py-1 rounded-md opacity-${notificationOpacity} transform transition-all duration-500 right-12`}
+              className={`absolute flex items-center bg-green-500 text-white text-sm font-bold px-2 py-1 rounded-md ${!displayNotification && 'hidden'} right-12`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <FontAwesomeIcon icon={faCheckCircle} className='w-6 h-6 mr-2' />
               <p>Code copied</p>
             </div>
             {
@@ -110,7 +97,7 @@ export default function CodeAndPreview() {
           </div>
         ) : (
           <div
-            className="border-2 rounded border-blue-100  p-4"
+            className="border-2 rounded border-blue-100 p-4 overflow-hidden max-h-[80vh]"
             style={cssStyle}
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting

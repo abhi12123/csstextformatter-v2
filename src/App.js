@@ -15,7 +15,7 @@ function App() {
         </a>
         <FontAwesomeIcon
           icon={expandNavBar ? faTimes : faBars}
-          className="text-xl m-4 focus:outline-none focus:bg-gray-700"
+          className="text-xl m-4 focus:outline-none focus:bg-gray-700 z-20"
           onClick={() => setExpandNavBar(!expandNavBar)}
         />
       </div>

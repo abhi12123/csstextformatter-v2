@@ -19,6 +19,20 @@ const styleDetailsArray = [
     defaultValue: "rgb(0,0,0,1)",
     id : 2
   },
+  {
+    name: "letter-spacing",
+    type: "number",
+    units: ['px','rem','em','in','cm','mm'],
+    defaultValue:0,
+    id : 3
+  },
+  {
+    name: "word-spacing",
+    type: "number",
+    units: ['px','rem','em','in','cm','mm'],
+    defaultValue:0,
+    id : 4
+  },
 ];
 
 export { styleDetailsArray };
