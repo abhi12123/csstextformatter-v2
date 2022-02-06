@@ -69,17 +69,20 @@ export default function SideNavbar({ expandNavBar }) {
           </p>
           <FontAwesomeIcon icon={faUndo} className={``} />
         </button>
-        {styleDetailsArray.map((styleDetails, index) => {
-          return (
-            <StyleEntry
-              styleDetails={styleDetails}
-              key={styleDetails.id}
-              reset={reset}
-              enableList={enableList}
-              index={index}
-            />
-          );
-        })}
+        <div className="max-h-[70vh] scrollbar-thin scrollbar-thumb-white scrollbar-track-blue-900 pb-[310px]">
+          {styleDetailsArray.map((styleDetails, index) => {
+            return (
+              <StyleEntry
+                styleDetails={styleDetails}
+                key={styleDetails.id}
+                reset={reset}
+                enableList={enableList}
+                index={index}
+                key={index}
+              />
+            );
+          })}
+        </div>
       </nav>
     </div>
   );

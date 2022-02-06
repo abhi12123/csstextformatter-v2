@@ -4,20 +4,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SketchPicker } from "react-color";
 import { useDispatch, useSelector } from "react-redux";
 import { addStyle, removeStyle } from "../redux/reducer";
+import WebFont from "webfontloader";
 
-export default function StyleEntry({ styleDetails, reset, enableList,index }) {
-  const { name, type, units, defaultValue } = styleDetails;
+export default function StyleEntry({ styleDetails, reset, enableList, index }) {
+  const { name, type, units, defaultValue, options } = styleDetails;
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [loadedFonts, setLoadedFonts] = useState([]);
   const dispatch = useDispatch();
   const [inputValues, setInputValues] = useState({
     value: defaultValue,
     unit: "px",
   });
   const styles = useSelector((state) => state.styleReducer.value);
-  
+
+  const loadFont = function (font) {
+    if (!loadedFonts.includes(font)) {
+      setLoadedFonts([...loadedFonts, font]);
+      WebFont.load({
+        google: {
+          families: [font],
+        },
+      });
+    }
+  };
+
   const handleChangeValue = (value) => {
-    if(Object.keys(styles).length === 0){
+    if (Object.keys(styles).length === 0) {
       handleReset();
     }
     if (type == "color") {
@@ -35,6 +48,13 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
       value: defaultValue,
       unit: "px",
     });
+  };
+
+  const handleDropDownChange = (value) => {
+    if (name == "font-family" && value !== "Arial") {
+      loadFont(value);
+    }
+    handleChangeValue(value);
   };
 
   useEffect(() => {
@@ -55,14 +75,14 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
     dispatch(addStyle(dispatchPayLoad));
   }, [inputValues, checked]);
 
-  useEffect(()=>{
+  useEffect(() => {
     handleReset();
-  },[reset])
+  }, [reset]);
 
   const getInput = () => {
     return (
       <div className="text-black w-1/3">
-        <form className="text-center" onSubmit={(e)=>e.preventDefault()}>
+        <form className="text-center" onSubmit={(e) => e.preventDefault()}>
           {type == "number" && (
             <input
               type="number"
@@ -77,7 +97,9 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
               className="m-1 p-1 w-12 rounded"
               name="unit"
               value={inputValues.unit}
-              onChange={(e) => setInputValues({ ...inputValues, unit: e.target.value})}
+              onChange={(e) =>
+                setInputValues({ ...inputValues, unit: e.target.value })
+              }
             >
               {units.map((unit, i) => {
                 return <option key={i}>{unit}</option>;
@@ -86,7 +108,7 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
           )}
 
           {type == "color" && (
-            <div>
+            <div className="relative">
               <div onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                 <div
                   className={`p-1 w-12 m-1 h-7 border-2 border-white rounded mx-auto `}
@@ -96,7 +118,7 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
                 ></div>
               </div>
               {displayColorPicker ? (
-                <div className="absolute z-10">
+                <div className="absolute z-10 top-100 left-1/2 transform -translate-x-1/2">
                   <div onClick={() => setDisplayColorPicker(false)} />
                   <SketchPicker
                     color={inputValues.value}
@@ -105,6 +127,19 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
                 </div>
               ) : null}
             </div>
+          )}
+
+          {type == "dropdown" && (
+            <select
+              value={inputValues.value}
+              className="m-1 p-1 w-4/5 rounded"
+              onChange={(e) => handleDropDownChange(e.target.value)}
+            >
+              <option key={-1}>{defaultValue}</option>
+              {options.map((option, i) => (
+                <option key={i}>{option}</option>
+              ))}
+            </select>
           )}
         </form>
       </div>
@@ -138,7 +173,11 @@ export default function StyleEntry({ styleDetails, reset, enableList,index }) {
   };
 
   return (
-    <div className={`py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm ${!enableList[index] && 'hidden'} `}>
+    <div
+      className={`py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm ${
+        !enableList[index] && "hidden"
+      } `}
+    >
       <div className="flex items-center justify-center w-4/5">
         <p className="mx-4 w-1/3">{name}</p>
         {getInput()}

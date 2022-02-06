@@ -1,12 +1,13 @@
 const cssToInline = (property) => {
-    const index = property.indexOf("-");
-    let convertedPropertyName = property;
-    if (index > -1) {
-      let propertyValue = property[index + 1].toUpperCase();
-      convertedPropertyName =
-        property.slice(0, index) + propertyValue + property.slice(index + 2);
+  let convertedPropertyArray = [];
+  [...property].map((char, i) => {
+    if (char == "-") {
+      convertedPropertyArray.push([...property][i + 1].toUpperCase());
+    } else {
+      [...property][i - 1] !== "-" && convertedPropertyArray.push(char);
     }
-    return convertedPropertyName;
-  };
+  });
+  return convertedPropertyArray.join("");
+};
 
-export {cssToInline};
+export { cssToInline };
