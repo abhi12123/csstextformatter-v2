@@ -9,7 +9,7 @@ function App() {
   const [expandNavBar, setExpandNavBar] = useState(false);
   const TopNavBar = () => {
     return (
-      <div className="bg-gray-800 text-gray-100 flex justify-between items-center md:hidden">
+      <div className="bg-gray-900 text-gray-100 flex justify-between items-center md:hidden">
         <a href="#" className="block p-4 text-white font-bold">
           Css Text Formatter
         </a>

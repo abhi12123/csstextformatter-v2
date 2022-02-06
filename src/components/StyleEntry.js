@@ -48,6 +48,7 @@ export default function StyleEntry({ styleDetails, reset, enableList, index }) {
       value: defaultValue,
       unit: "px",
     });
+    setChecked(false)
   };
 
   const handleDropDownChange = (value) => {
@@ -82,7 +83,7 @@ export default function StyleEntry({ styleDetails, reset, enableList, index }) {
   const getInput = () => {
     return (
       <div className="text-black w-1/3">
-        <form className="text-center" onSubmit={(e) => e.preventDefault()}>
+        <form className="" onSubmit={(e) => e.preventDefault()}>
           {type == "number" && (
             <input
               type="number"
@@ -111,7 +112,7 @@ export default function StyleEntry({ styleDetails, reset, enableList, index }) {
             <div className="relative">
               <div onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                 <div
-                  className={`p-1 w-12 m-1 h-7 border-2 border-white rounded mx-auto `}
+                  className={`p-1 w-12 m-1 h-7 border-2 border-white rounded`}
                   style={{
                     backgroundColor: inputValues.value,
                   }}
@@ -174,20 +175,18 @@ export default function StyleEntry({ styleDetails, reset, enableList, index }) {
 
   return (
     <div
-      className={`py-2 hover:bg-blue-700 hover:text-white flex items-center justify-center text-sm ${
+      className={`rounded py-2 hover:bg-gray-800 hover:text-white flex items-center justify-center text-sm ${
         !enableList[index] && "hidden"
       } `}
     >
-      <div className="flex items-center justify-center w-4/5">
         <p className="mx-4 w-1/3">{name}</p>
         {getInput()}
         <CheckBox />
-      </div>
-      <FontAwesomeIcon
-        className="mx-1 cursor-pointer active:text-blue-500"
-        icon={faUndo}
-        onClick={handleReset}
-      />
+        <FontAwesomeIcon
+          className="mx-1 cursor-pointer active:text-gray-300"
+          icon={faUndo}
+          onClick={handleReset}
+        />
     </div>
   );
 }
