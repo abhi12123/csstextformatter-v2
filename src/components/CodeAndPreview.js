@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
   faCode,
-  faCopy,
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { useSelector } from "react-redux";
 import { cssToInline } from "../helpers/helper";
 
@@ -96,16 +96,16 @@ export default function CodeAndPreview() {
           preview or code accordingly. Clicking on the copy icon will copy the
           CSS to your clipboard.
         </div>
-        <div className={`bg-gray-900 rounded p-4 relative my-4 text-white transition-all ease-in-out md:block duration-200 ${
+        <div
+          className={`bg-gray-900 rounded p-4 min-h-[150px] relative my-4 text-white transition-all ease-in-out md:block duration-200 ${
             viewType == "preview" && "hidden"
-          }`}>
-          {Object.keys(styles).length !== 0 && (
-            <FontAwesomeIcon
-              icon={faCopy}
-              className="absolute right-5 text-xl cursor-pointer"
-              onClick={handleCopy}
-            />
-          )}
+          }`}
+        >
+          <FontAwesomeIcon
+            icon={faCopy}
+            className="absolute right-5 text-xl cursor-pointer"
+            onClick={handleCopy}
+          />
           <div
             className={`absolute flex items-center bg-green-500  text-sm font-bold px-2 py-1 rounded-md ${
               !displayNotification && "hidden"
@@ -115,9 +115,7 @@ export default function CodeAndPreview() {
             <p>Code copied</p>
           </div>
           {Object.keys(styles).length === 0 ? (
-            <p className="text-center font-bold">
-              Enable a style to see it here
-            </p>
+            <p className="text-gray-600">Enable a style to see it here..</p>
           ) : (
             <pre>{genPreviewCode()}</pre>
           )}
