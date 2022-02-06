@@ -84,12 +84,12 @@ export default function CodeAndPreview() {
           }`}
           style={cssStyle}
         >
-          Css Text Formatter is a webapp which can be used to format a text
-          sample. It displays the preview text and its CSS, which can copied
-          with a click, ready to be used wherever you want.
+          Css Text Formatter is a web application that can be used to format a
+          text sample. It displays the preview text and its CSS, which can be
+          copied with a click, ready to be used wherever you want.
           <br /> You can view the list of available styles in the sidebar, with
           its default values. You can change the values and check the preview.
-          You can reset the values using the reset icon.
+          You can reset the values using the reset button.
           <br />
           To enable a style click on the switch icon which is provided with each
           style. Click on the Preview and Code icons provided above to view the
