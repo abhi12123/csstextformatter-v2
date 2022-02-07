@@ -6,6 +6,6 @@ It displays the preview text and its CSS, which can be copied with a click, read
  - You can view the list of available styles in the sidebar, with its default values. 
  - You can change the values and check the preview. You can reset the values using the reset button.
  - To enable a style click on the switch icon which is provided with each style. Clicking on the copy icon will copy the CSS to your clipboard.
- - Created using ReactJs
+ - Created using ReactJs and TailWind.
 
 The application is live over [here](https://csstextformatter.abhinavvp.com/)
