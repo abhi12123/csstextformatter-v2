@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/csstextformatter-v2/static/css/main.a1535dfe.css",
-    "main.js": "/csstextformatter-v2/static/js/main.e176b177.js",
-    "static/js/787.24329b61.chunk.js": "/csstextformatter-v2/static/js/787.24329b61.chunk.js",
-    "index.html": "/csstextformatter-v2/index.html",
-    "main.a1535dfe.css.map": "/csstextformatter-v2/static/css/main.a1535dfe.css.map",
-    "main.e176b177.js.map": "/csstextformatter-v2/static/js/main.e176b177.js.map",
-    "787.24329b61.chunk.js.map": "/csstextformatter-v2/static/js/787.24329b61.chunk.js.map"
+    "main.css": "/static/css/main.a1535dfe.css",
+    "main.js": "/static/js/main.8f3cd09e.js",
+    "static/js/787.24329b61.chunk.js": "/static/js/787.24329b61.chunk.js",
+    "index.html": "/index.html",
+    "main.a1535dfe.css.map": "/static/css/main.a1535dfe.css.map",
+    "main.8f3cd09e.js.map": "/static/js/main.8f3cd09e.js.map",
+    "787.24329b61.chunk.js.map": "/static/js/787.24329b61.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a1535dfe.css",
-    "static/js/main.e176b177.js"
+    "static/js/main.8f3cd09e.js"
   ]
 }
