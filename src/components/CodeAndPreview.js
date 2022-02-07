@@ -92,8 +92,7 @@ export default function CodeAndPreview() {
           You can reset the values using the reset button.
           <br />
           To enable a style click on the switch icon which is provided with each
-          style. Click on the Preview and Code icons provided above to view the
-          preview or code accordingly. Clicking on the copy icon will copy the
+          style. Clicking on the copy icon will copy the
           CSS to your clipboard.
         </div>
         <div
