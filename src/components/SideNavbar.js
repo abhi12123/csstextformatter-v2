@@ -79,6 +79,7 @@ export default function SideNavbar({ expandNavBar }) {
           })}
         </div>
       </nav>
+      <footer className='absolute bottom-5 right-1/2 translate-x-1/2 text-sm'>Created by <a href='https://abhinavvp.com'>Abhinav</a></footer>
     </div>
   );
 }
